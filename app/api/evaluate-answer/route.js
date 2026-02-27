@@ -14,8 +14,8 @@ export async function POST(req) {
   Question: "${question}"
   Candidate Answer: "${userAnswer}"
   
-  Evaluate this answer strictly.
-  Output JSON format only:
+  Evaluate this answer strictly. Respond with ONLY valid JSON, no markdown, no code blocks, no extra text.
+  Output exactly this structure:
   {
     "rating": <number 1-10>,
     "feedback": "<One sentence critique>",
@@ -23,38 +23,59 @@ export async function POST(req) {
   }
   `;
 
+  // Try models in order — fall back if the first is unavailable on free tier
+  const models = [
+    "stepfun/step-3.5-flash:free",
+    "meta-llama/llama-3.3-70b-instruct:free",
+    "mistralai/mistral-7b-instruct:free"
+  ];
+
   try {
     const openai = new OpenAI({
       baseURL: "https://openrouter.ai/api/v1",
       apiKey: process.env.OPENROUTER_API_KEY,
     });
 
-    const completion = await openai.chat.completions.create({
-      model: "meta-llama/llama-3.3-70b-instruct:free",
-      messages: [
-        { role: "system", content: "You are a technical interviewer." },
-        { role: "user", content: PROMPT }
-      ]
-    });
-    
-    const content = completion.choices[0].message.content.replace(/```json|```/g, '').trim();
-    const aiResponse = JSON.parse(content);
+    let lastError = null;
 
-    // Save to Database
-    // Note: We need a server-side supabase client or use the client side if row level security allows insert.
-    // For API routes, usually good to use service role or just pass auth headers if using standard client.
-    // Here we will rely on the client-side saving or do it here if we had service key. 
-    // To keep it simple and secure, we'll return the result to the client and let the client save it, 
-    // OR we use the anon key if RLS allows valid inserts.
-    // BETTER: Client saves it. API just evaluates.
-    // WAIT: The plan said API saves it. But API usually needs Service Key or forwarded Auth.
-    // Let's return the evaluation and let the frontend save it to 'UserAnswer' via Supabase client which has the user's session.
-    // This is safer/easier than managing auth inside this Next.js API route without extra setup.
-    
-    return NextResponse.json(aiResponse);
+    for (const model of models) {
+      try {
+        const completion = await openai.chat.completions.create({
+          model,
+          messages: [
+            { role: "system", content: "You are a technical interviewer. Always respond with valid JSON only." },
+            { role: "user", content: PROMPT }
+          ],
+          max_tokens: 300
+        });
+
+        const raw = completion.choices?.[0]?.message?.content || '';
+        // Strip markdown fences and extract JSON object
+        let cleaned = raw.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
+        const start = cleaned.indexOf('{');
+        const end = cleaned.lastIndexOf('}');
+        if (start !== -1 && end !== -1) cleaned = cleaned.slice(start, end + 1);
+
+        const aiResponse = JSON.parse(cleaned);
+        return NextResponse.json(aiResponse);
+
+      } catch (modelErr) {
+        console.warn(`Model ${model} failed:`, modelErr?.message);
+        lastError = modelErr;
+        // Try next model
+      }
+    }
+
+    // All models failed — return a default so the interview can still continue
+    console.error("All evaluate-answer models failed:", lastError?.message);
+    return NextResponse.json({
+      rating: 5,
+      feedback: "Evaluation unavailable for this answer.",
+      improvement: "Please retry the interview for a full evaluation."
+    });
 
   } catch (e) {
-    console.error("Evaluation error:", e);
-    return NextResponse.json({ error: e.message || "Unknown error", stack: e.stack }, { status: 500 });
+    console.error("Evaluate-answer route error:", e?.message);
+    return NextResponse.json({ error: e.message || "Unknown error" }, { status: 500 });
   }
 }

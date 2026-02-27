@@ -71,9 +71,11 @@ function StartInterview() {
     setCallStatus('starting');
     setFeedback(null);
     setConversation([]);
-    setConversation([]);
     conversationRef.current = [];
     isFeedbackGenerated.current = false;
+
+    // Remove all previous listeners to prevent stacking when startCall is called multiple times
+    vapi.removeAllListeners();
     
     try {
       const questions = interviewInfo.interviewData.questionList
@@ -140,9 +142,34 @@ Example closing:
       });
 
       vapi.on('error', (error) => {
-        console.error('VAPI error:', JSON.stringify(error, null, 2));
-        setCallStatus('idle');
-        toast.error("Interview session error: " + (error?.message || "Unknown error"));
+        // Stringify the whole error to catch all variants:
+        // daily-error, daily-call-join-error, start-method-error all share the same root cause
+        const errorStr = JSON.stringify(error || '');
+        const isEjected =
+          errorStr.includes('no-room') ||
+          errorStr.includes('ejected') ||
+          errorStr.includes('Meeting has ended') ||
+          errorStr.includes('daily-error') ||
+          errorStr.includes('daily-call-join-error') ||
+          errorStr.includes('start-method-error');
+
+        if (isEjected) {
+          // Use console.warn (not console.error) — Next.js 15 turns console.error
+          // into a visible red error overlay even for expected call-end events
+          console.warn('VAPI call ended by server:', errorStr.substring(0, 200));
+          setCallStatus('idle');
+          // Set the flag IMMEDIATELY (before setTimeout) so that if multiple error events
+          // fire synchronously for the same call, only the first one schedules feedback
+          if (!isFeedbackGenerated.current) {
+            isFeedbackGenerated.current = true;
+            console.log('Scheduling feedback generation...');
+            setTimeout(() => generateFeedback(), 500);
+          }
+        } else {
+          console.warn('VAPI error:', errorStr.substring(0, 300));
+          setCallStatus('idle');
+          toast.error("Interview session error: " + (error?.message || "Unknown error"));
+        }
       });
 
       vapi.on('speech-start', () => setIsAiSpeaking(true));
@@ -152,10 +179,15 @@ Example closing:
 
       vapi.on("message", (message) => {
         console.log("New message:", message);
-        if (message?.role === "assistant" || message?.role === "user") {
+        // VAPI sends spoken text in message.transcript (not message.content)
+        // Only capture 'final' transcripts to avoid duplicate partial updates
+        const text = message?.transcript || message?.content;
+        const isFinal = !message?.transcriptType || message?.transcriptType === 'final';
+
+        if (text && isFinal && (message?.role === "assistant" || message?.role === "user")) {
           const newMessage = {
             role: message.role,
-            content: message.content,
+            content: text,
             timestamp: new Date().toISOString()
           };
           conversationRef.current = [...conversationRef.current, newMessage];
@@ -259,8 +291,51 @@ Example closing:
 
     if (response.data?.content) {
       try {
-        const content = response.data.content.replace(/```json|```/g, '');
-        const parsedFeedback = JSON.parse(content);
+        let rawContent = response.data.content;
+
+        // Step 1: Strip markdown code fences (```json ... ``` or ``` ... ```)
+        rawContent = rawContent.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
+
+        // Step 2: Extract the outermost JSON object using brace-matching
+        // This handles cases where the AI adds text before/after the JSON
+        const firstBrace = rawContent.indexOf('{');
+        const lastBrace = rawContent.lastIndexOf('}');
+        if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
+          rawContent = rawContent.slice(firstBrace, lastBrace + 1);
+        }
+
+        // Step 3: Attempt to parse; if it fails due to truncation, try to
+        // reconstruct a minimal valid object from what we have
+        let parsedFeedback;
+        try {
+          parsedFeedback = JSON.parse(rawContent);
+        } catch (truncErr) {
+          console.warn("JSON truncated, attempting recovery:", truncErr.message);
+          // Extract numeric ratings with regex as a fallback
+          const getRating = (key) => {
+            const match = rawContent.match(new RegExp(`"${key}"\\s*:\\s*(\\d+)`));
+            return match ? parseInt(match[1]) : 5;
+          };
+          const getSummary = () => {
+            const match = rawContent.match(/"summary"\s*:\s*"([^"]{0,300})/);
+            return match ? match[1] + '...' : 'Feedback was generated but response was truncated.';
+          };
+          parsedFeedback = {
+            feedback: {
+              rating: {
+                technicalSkills: getRating('technicalSkills'),
+                communication: getRating('communication'),
+                problemSolving: getRating('problemSolving'),
+                experience: getRating('experience'),
+              },
+              summary: getSummary(),
+              strengths: [],
+              areasForImprovement: [],
+              Recommendation: rawContent.includes('"Recommended"') ? 'Recommended' : 'Not Recommended',
+              RecommendationMsg: 'Full feedback was truncated. Partial ratings recovered.'
+            }
+          };
+        }
 
         const feedbackToStore = {
           feedback: {
@@ -301,6 +376,7 @@ Example closing:
     } else {
       toast.error("No feedback content received");
     }
+
   } catch (error) {
     console.error("Feedback generation error:", error);
     toast.error("Failed to generate feedback");

@@ -6,10 +6,22 @@ import OpenAI from "openai";
 export async function POST(req) {
   const { conversation, interviewId } = await req.json();
 
-  let conversationText = conversation;
+  let conversationText = null;
 
+  // If conversation is an array (from VAPI), convert to readable dialogue text
+  if (Array.isArray(conversation) && conversation.length > 0) {
+    const validMessages = conversation.filter(m => m?.content && m.content.trim());
+    if (validMessages.length > 0) {
+      conversationText = validMessages
+        .map(m => `${m.role.toUpperCase()}: ${m.content}`)
+        .join('\n');
+    }
+  } else if (typeof conversation === 'string' && conversation.trim()) {
+    conversationText = conversation;
+  }
+
+  // Fall back to fetching from UserAnswer table if no conversation provided
   if (!conversationText && interviewId) {
-    // Fetch conversation from DB if not provided
     const { data: userAnswers, error } = await supabase
       .from('UserAnswer')
       .select('question, userAnswer, feedback')
@@ -31,7 +43,18 @@ Feedback: ${ans.feedback}
   }
 
   if (!conversationText) {
-    return NextResponse.json({ error: "No conversation data found" }, { status: 400 });
+    // Return a graceful incomplete-session response instead of crashing with 400
+    const incompleteResponse = JSON.stringify({
+      feedback: {
+        rating: { technicalSkills: 0, communication: 0, problemSolving: 0, experience: 0 },
+        summary: "The interview session ended before any conversation was recorded. This may be due to a connection issue or the call being ended very early. Please retry the interview.",
+        strengths: [],
+        areasForImprovement: ["Complete the full interview session to receive a proper evaluation."],
+        Recommendation: "Not Recommended",
+        RecommendationMsg: "No conversation data was captured. Please retry the interview session."
+      }
+    });
+    return NextResponse.json({ content: incompleteResponse });
   }
 
   const FINAL_PROMPT = FEEDBACK_PROMPT.replace('{{conversation}}', JSON.stringify(conversationText));
@@ -47,7 +70,7 @@ Feedback: ${ans.feedback}
       messages: [
         { role: "user", content: FINAL_PROMPT }
       ],
-      max_tokens: 2000 
+      max_tokens: 4000
     });
 
     console.log("OpenAI Completion Response:", completion);
