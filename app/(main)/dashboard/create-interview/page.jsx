@@ -69,20 +69,20 @@ function CreateInterviewContent() {
   const progressValue = ((step - 1) / (steps.length - 1)) * 100;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50/60 via-white to-purple-50/40 py-10 px-4 sm:px-6 md:px-10 lg:px-20">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50/60 via-white to-purple-50/40 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 py-10 px-4 sm:px-6 md:px-10 lg:px-20">
       <div className="max-w-3xl mx-auto">
 
         {/* Header */}
         <div className="flex items-center gap-4 mb-10 animate-fade-in-down">
           <button
             onClick={() => router.back()}
-            className="w-10 h-10 rounded-xl border-2 border-gray-200 flex items-center justify-center hover:border-indigo-300 hover:bg-indigo-50 hover:text-indigo-600 transition-all duration-200 flex-shrink-0"
+            className="w-10 h-10 rounded-xl border-2 border-gray-200 dark:border-gray-700 flex items-center justify-center hover:border-indigo-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:text-gray-300 dark:hover:text-indigo-400 transition-all duration-200 flex-shrink-0"
           >
             <ArrowLeft className="h-5 w-5" />
           </button>
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Create New Interview</h1>
-            <p className="text-gray-500 text-sm mt-0.5">Set up your AI-powered interview in 3 steps</p>
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-gray-100">Create New Interview</h1>
+            <p className="text-gray-500 dark:text-gray-400 text-sm mt-0.5">Set up your AI-powered interview in 3 steps</p>
           </div>
         </div>
 
@@ -91,7 +91,7 @@ function CreateInterviewContent() {
           {/* Step row */}
           <div className="relative flex items-start justify-between">
             {/* Background connector line (sits behind icons) */}
-            <div className="absolute top-5 left-5 right-5 h-0.5 bg-gray-200 -z-0" />
+            <div className="absolute top-5 left-5 right-5 h-0.5 bg-gray-200 dark:bg-gray-700 -z-0" />
             {/* Active connector line */}
             <div
               className="absolute top-5 left-5 h-0.5 bg-gradient-to-r from-indigo-500 to-purple-600 transition-all duration-500 -z-0"
@@ -107,10 +107,10 @@ function CreateInterviewContent() {
                   {/* Icon circle */}
                   <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 ${
                     isDone
-                      ? 'bg-gradient-to-br from-green-500 to-emerald-600 text-white shadow-md shadow-green-200'
+                      ? 'bg-gradient-to-br from-green-500 to-emerald-600 text-white shadow-md shadow-green-200 dark:shadow-green-900/40'
                       : isActive
-                        ? 'bg-gradient-to-br from-indigo-600 to-purple-600 text-white shadow-md shadow-indigo-200 scale-110'
-                        : 'bg-white border-2 border-gray-200 text-gray-400'
+                        ? 'bg-gradient-to-br from-indigo-600 to-purple-600 text-white shadow-md shadow-indigo-200 dark:shadow-indigo-900/40 scale-110'
+                        : 'bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-600 text-gray-400 dark:text-gray-500'
                   }`}>
                     {isDone
                       ? <CheckCircle className="w-5 h-5" />
@@ -119,7 +119,7 @@ function CreateInterviewContent() {
                   </div>
                   {/* Label */}
                   <span className={`text-xs font-semibold text-center ${
-                    isActive ? 'text-indigo-600' : isDone ? 'text-green-600' : 'text-gray-400'
+                    isActive ? 'text-indigo-600 dark:text-indigo-400' : isDone ? 'text-green-600 dark:text-green-400' : 'text-gray-400 dark:text-gray-500'
                   }`}>
                     {s.label}
                   </span>
@@ -132,11 +132,11 @@ function CreateInterviewContent() {
           <div className="mt-5">
             <Progress
               value={progressValue}
-              className="h-1.5 bg-gray-100 rounded-full [&>div]:bg-gradient-to-r [&>div]:from-indigo-500 [&>div]:to-purple-600 [&>div]:transition-all [&>div]:duration-500 [&>div]:rounded-full"
+              className="h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full [&>div]:bg-gradient-to-r [&>div]:from-indigo-500 [&>div]:to-purple-600 [&>div]:transition-all [&>div]:duration-500 [&>div]:rounded-full"
             />
             <div className="flex justify-between mt-1.5">
-              <span className="text-xs text-gray-400">Step {step} of {steps.length}</span>
-              <span className="text-xs text-indigo-600 font-medium">{Math.round(progressValue)}% complete</span>
+              <span className="text-xs text-gray-400 dark:text-gray-500">Step {step} of {steps.length}</span>
+              <span className="text-xs text-indigo-600 dark:text-indigo-400 font-medium">{Math.round(progressValue)}% complete</span>
             </div>
           </div>
         </div>

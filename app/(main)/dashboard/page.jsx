@@ -1,5 +1,5 @@
 import CreateOptions from "./_components/CreateOptions";
-import LatestInterviewsList from "./_components/LatestInterviewsList";
+import DashboardStats from "./_components/DashboardStats";
 import WelcomeContainer from "./_components/WelcomeContainer";
 
 function Dashboard() {
@@ -10,16 +10,17 @@ function Dashboard() {
       {/* Quick Actions */}
       <div className="flex items-center gap-3 mb-5">
         <div className="w-1 h-7 rounded-full bg-gradient-to-b from-blue-500 to-indigo-600" />
-        <h2 className="font-bold text-2xl md:text-3xl text-gray-800">
+        <h2 className="font-bold text-2xl md:text-3xl text-gray-800 dark:text-gray-100">
           Quick Actions
         </h2>
       </div>
       <CreateOptions />
 
       {/* Divider */}
-      <div className="my-6 h-px bg-gradient-to-r from-transparent via-indigo-100 to-transparent" />
+      <div className="my-6 h-px bg-gradient-to-r from-transparent via-indigo-100 dark:via-indigo-900/40 to-transparent" />
 
-      <LatestInterviewsList />
+      {/* Analytics Dashboard */}
+      <DashboardStats />
     </div>
   );
 }

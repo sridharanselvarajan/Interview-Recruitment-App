@@ -25,13 +25,23 @@ function LatestInterviewsList() {
     setInterviewList(Interview);
   };
 
+  const onDelete = (interview_id) => {
+    setInterviewList((prev) => prev.filter((i) => i.interview_id !== interview_id));
+  };
+
+  const onUpdate = (interview_id, updatedFields) => {
+    setInterviewList((prev) =>
+      prev.map((i) => (i.interview_id === interview_id ? { ...i, ...updatedFields } : i))
+    );
+  };
+
   return (
     <div className="mt-2 animate-fade-in-up delay-300">
       {/* Section header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
           <div className="w-1 h-7 rounded-full bg-gradient-to-b from-indigo-500 to-purple-600" />
-          <h2 className="font-bold text-2xl md:text-3xl text-gray-800">
+          <h2 className="font-bold text-2xl md:text-3xl text-gray-800 dark:text-gray-100">
             Recent Interviews
           </h2>
         </div>
@@ -53,8 +63,8 @@ function LatestInterviewsList() {
             </div>
           </div>
           <div className="space-y-1">
-            <h2 className="text-lg font-bold text-gray-800">No interviews yet</h2>
-            <p className="text-gray-500 text-sm">Create your first AI interview to get started</p>
+            <h2 className="text-lg font-bold text-gray-800 dark:text-gray-100">No interviews yet</h2>
+            <p className="text-gray-500 dark:text-gray-400 text-sm">Create your first AI interview to get started</p>
           </div>
           <Link href="/dashboard/create-interview" passHref>
             <button className="flex items-center gap-2 py-3 px-6 rounded-2xl btn-shimmer text-white font-semibold text-sm shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300">
@@ -70,7 +80,7 @@ function LatestInterviewsList() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
           {interviewList.map((interview, index) => (
             <div key={index} className="animate-fade-in-up" style={{ animationDelay: `${index * 80}ms` }}>
-              <InterviewCard interview={interview} index={index} />
+              <InterviewCard interview={interview} index={index} onDelete={onDelete} onUpdate={onUpdate} />
             </div>
           ))}
         </div>

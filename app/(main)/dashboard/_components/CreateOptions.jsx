@@ -8,7 +8,7 @@ const options = [
     iconBg: "from-blue-500 to-indigo-600",
     glowColor: "rgba(99,102,241,0.3)",
     badge: "Most Popular",
-    badgeColor: "bg-indigo-100 text-indigo-700",
+    badgeColor: "bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300",
     title: "Create New Interview",
     description: "Create AI-powered video interviews and schedule them with candidates seamlessly.",
     cta: "Get Started",
@@ -20,7 +20,7 @@ const options = [
     iconBg: "from-purple-500 to-pink-600",
     glowColor: "rgba(168,85,247,0.3)",
     badge: "Audio Only",
-    badgeColor: "bg-purple-100 text-purple-700",
+    badgeColor: "bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300",
     title: "Phone Screening Call",
     description: "Schedule AI-driven phone screening calls with candidates — no video required.",
     cta: "Get Started",
@@ -48,7 +48,6 @@ function CreateOptions() {
             {/* Top row: icon + badge */}
             <div className="flex items-start justify-between">
               <div className={`relative w-14 h-14 rounded-2xl bg-gradient-to-br ${opt.iconBg} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                {/* Icon glow */}
                 <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${opt.iconBg} opacity-50 blur-md group-hover:blur-lg transition-all duration-300`} />
                 <Icon className="w-6 h-6 text-white relative z-10" />
               </div>
@@ -59,16 +58,16 @@ function CreateOptions() {
 
             {/* Text */}
             <div className="space-y-1.5">
-              <h2 className="font-bold text-lg text-gray-800 group-hover:text-indigo-700 transition-colors duration-200">
+              <h2 className="font-bold text-lg text-gray-800 dark:text-gray-100 group-hover:text-indigo-700 dark:group-hover:text-indigo-300 transition-colors duration-200">
                 {opt.title}
               </h2>
-              <p className="text-gray-500 text-sm leading-relaxed">
+              <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
                 {opt.description}
               </p>
             </div>
 
             {/* CTA */}
-            <div className="flex items-center gap-2 text-sm font-semibold text-indigo-600 group-hover:gap-3 transition-all duration-200 mt-auto">
+            <div className="flex items-center gap-2 text-sm font-semibold text-indigo-600 dark:text-indigo-400 group-hover:gap-3 transition-all duration-200 mt-auto">
               <span>{opt.cta}</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
             </div>

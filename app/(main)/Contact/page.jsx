@@ -53,7 +53,7 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50/30 to-white p-6 md:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50/30 to-white dark:from-gray-950 dark:via-gray-900 dark:to-indigo-950/20 p-6 md:p-8 transition-colors duration-300">
       <div className="max-w-4xl mx-auto space-y-8">
 
         {/* Page Header */}
@@ -66,8 +66,8 @@ export default function ContactPage() {
               </div>
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Contact & Feedback</h1>
-              <p className="text-gray-500 text-sm mt-0.5">We'd love to hear from you</p>
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Contact & Feedback</h1>
+              <p className="text-gray-500 dark:text-gray-400 text-sm mt-0.5">We'd love to hear from you</p>
             </div>
           </div>
         </div>
@@ -78,15 +78,15 @@ export default function ContactPage() {
             const Icon = info.icon;
             const content = (
               <div
-                className={`card-premium p-5 flex items-center gap-4 animate-fade-in-up`}
+                className="card-premium p-5 flex items-center gap-4 animate-fade-in-up"
                 style={{ animationDelay: `${index * 80 + 100}ms` }}
               >
                 <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${info.gradient} flex items-center justify-center shadow-md flex-shrink-0`}>
                   <Icon className="h-5 w-5 text-white" />
                 </div>
                 <div>
-                  <p className="text-xs font-medium text-gray-400 uppercase tracking-wide">{info.label}</p>
-                  <p className="font-semibold text-gray-800 text-sm mt-0.5">{info.value}</p>
+                  <p className="text-xs font-medium text-gray-400 dark:text-gray-500 uppercase tracking-wide">{info.label}</p>
+                  <p className="font-semibold text-gray-800 dark:text-gray-100 text-sm mt-0.5">{info.value}</p>
                 </div>
               </div>
             );
@@ -100,14 +100,14 @@ export default function ContactPage() {
         <div className="animate-fade-in-up delay-200">
           <div className="flex items-center gap-3 mb-5">
             <div className="w-1 h-7 rounded-full bg-gradient-to-b from-indigo-500 to-purple-600" />
-            <h2 className="font-bold text-xl text-gray-800">Send a Message</h2>
+            <h2 className="font-bold text-xl text-gray-800 dark:text-gray-100">Send a Message</h2>
           </div>
 
           <div className="card-premium p-6 md:p-8">
             {submitSuccess && (
-              <div className="mb-6 flex items-center gap-3 p-4 rounded-xl bg-green-50 border border-green-200 animate-scale-in">
-                <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
-                <p className="text-sm text-green-700 font-medium">
+              <div className="mb-6 flex items-center gap-3 p-4 rounded-xl bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 animate-scale-in">
+                <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0" />
+                <p className="text-sm text-green-700 dark:text-green-300 font-medium">
                   Your email client should open with the message prepared. If not, email us directly at{" "}
                   <a href="mailto:sriselvan05@gmail.com" className="underline">sriselvan05@gmail.com</a>
                 </p>
@@ -117,7 +117,7 @@ export default function ContactPage() {
             <form onSubmit={handleSubmit} className="space-y-5">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div className="space-y-2">
-                  <label htmlFor="name" className="text-sm font-semibold text-gray-700">
+                  <label htmlFor="name" className="text-sm font-semibold text-gray-700 dark:text-gray-300">
                     Your Name
                   </label>
                   <Input
@@ -128,11 +128,11 @@ export default function ContactPage() {
                     onChange={handleChange}
                     placeholder="John Doe"
                     required
-                    className="h-12 rounded-xl border-gray-200 bg-gray-50 focus:bg-white focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 transition-all duration-200"
+                    className="h-12 rounded-xl border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 focus:bg-white dark:focus:bg-gray-700 focus:border-indigo-400 transition-all duration-200"
                   />
                 </div>
                 <div className="space-y-2">
-                  <label htmlFor="email" className="text-sm font-semibold text-gray-700">
+                  <label htmlFor="email" className="text-sm font-semibold text-gray-700 dark:text-gray-300">
                     Email Address
                   </label>
                   <Input
@@ -143,13 +143,13 @@ export default function ContactPage() {
                     onChange={handleChange}
                     placeholder="john@example.com"
                     required
-                    className="h-12 rounded-xl border-gray-200 bg-gray-50 focus:bg-white focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 transition-all duration-200"
+                    className="h-12 rounded-xl border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 focus:bg-white dark:focus:bg-gray-700 focus:border-indigo-400 transition-all duration-200"
                   />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="message" className="text-sm font-semibold text-gray-700">
+                <label htmlFor="message" className="text-sm font-semibold text-gray-700 dark:text-gray-300">
                   Message
                 </label>
                 <Textarea
@@ -160,12 +160,12 @@ export default function ContactPage() {
                   onChange={handleChange}
                   placeholder="Tell us how we can help you..."
                   required
-                  className="rounded-xl border-gray-200 bg-gray-50 focus:bg-white focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 transition-all duration-200 resize-none"
+                  className="rounded-xl border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 focus:bg-white dark:focus:bg-gray-700 focus:border-indigo-400 transition-all duration-200 resize-none"
                 />
               </div>
 
               <div className="flex items-center justify-between pt-2">
-                <p className="text-sm text-gray-400 flex items-center gap-1.5">
+                <p className="text-sm text-gray-400 dark:text-gray-500 flex items-center gap-1.5">
                   <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
                   We typically respond within 24 hours
                 </p>

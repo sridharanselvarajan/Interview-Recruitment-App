@@ -250,11 +250,12 @@ Example closing:
   
   try {
     // Rolling Evaluation Mode: We fetch the aggregated stats from 'UserAnswer' table via the API
-    const response = await axios.post('/api/ai-feedback', {
-      interviewId: interview_id, // Pass ID instead of raw conversation
-      jobPosition: interviewInfo?.interviewData?.jobPosition,
-      userName: interviewInfo?.userName
-    });
+      const response = await axios.post('/api/ai-feedback', {
+        interviewId: interview_id,
+        conversation: conversationRef.current, // Send conversation directly
+        jobPosition: interviewInfo?.interviewData?.jobPosition,
+        userName: interviewInfo?.userName
+      });
 
     if (response.data?.content) {
       try {

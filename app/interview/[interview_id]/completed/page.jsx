@@ -5,7 +5,7 @@ import Link from "next/link";
 
 function InterviewComplete() {
     return (
-        <div className="min-h-screen bg-gradient-to-br from-indigo-50/60 via-white to-purple-50/40 flex flex-col items-center justify-center p-6">
+        <div className="min-h-screen bg-gradient-to-br from-indigo-50/60 via-white to-purple-50/40 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 flex flex-col items-center justify-center p-6">
 
             {/* Subtle background blobs */}
             <div className="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none -z-10">
@@ -33,14 +33,14 @@ function InterviewComplete() {
 
                         {/* Title */}
                         <div className="space-y-2 animate-fade-in-up delay-100">
-                            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs font-medium mb-2">
+                            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-50 dark:bg-indigo-900/30 border border-indigo-100 dark:border-indigo-800/40 text-indigo-700 dark:text-indigo-400 text-xs font-medium mb-2">
                                 <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" />
                                 Interview Recorded Successfully
                             </div>
-                            <h1 className="text-4xl font-bold text-gray-900">
+                            <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100">
                                 Interview Complete!
                             </h1>
-                            <p className="text-gray-500 text-base">
+                            <p className="text-gray-500 dark:text-gray-400 text-base">
                                 Thank you for your time and thoughtful responses.
                             </p>
                         </div>
@@ -53,13 +53,13 @@ function InterviewComplete() {
                                 alt="Completion illustration"
                                 width={400}
                                 height={240}
-                                className="relative rounded-2xl shadow-lg border border-gray-100 mx-auto"
+                                className="relative rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700/50 mx-auto"
                             />
                         </div>
 
                         {/* What's Next */}
-                        <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl p-5 text-left space-y-3 border border-indigo-100 animate-fade-in-up delay-300">
-                            <div className="flex items-center gap-2 text-gray-800 font-semibold">
+                        <div className="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-950/40 dark:to-purple-950/40 rounded-2xl p-5 text-left space-y-3 border border-indigo-100 dark:border-indigo-800/30 animate-fade-in-up delay-300">
+                            <div className="flex items-center gap-2 text-gray-800 dark:text-gray-200 font-semibold">
                                 <Clock className="w-4 h-4 text-indigo-500" />
                                 What happens next?
                             </div>
@@ -69,7 +69,7 @@ function InterviewComplete() {
                                     "Detailed feedback is being generated",
                                     "Results will be available shortly",
                                 ].map((step, i) => (
-                                    <div key={i} className="flex items-center gap-2.5 text-gray-600 text-sm">
+                                    <div key={i} className="flex items-center gap-2.5 text-gray-600 dark:text-gray-300 text-sm">
                                         <div className="w-5 h-5 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-xs text-white font-bold flex-shrink-0">
                                             {i + 1}
                                         </div>

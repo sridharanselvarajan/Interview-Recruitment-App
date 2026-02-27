@@ -64,7 +64,7 @@ function InterviewDetail() {
 
     return (
         <div className="space-y-6">
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Interview Details</h1>
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-gray-100">Interview Details</h1>
             <InterviewDetailContainer interviewDetail={interviewDetail} />
             <CandidateList CandidateList={interviewDetail?.['interview-feedback'] || []} />
         </div>

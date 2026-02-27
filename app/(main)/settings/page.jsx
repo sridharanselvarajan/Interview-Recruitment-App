@@ -11,28 +11,24 @@ const benefits = [
     title: "Automated Interview Screening",
     description: "Our AI assistant conducts initial interviews 24/7, saving you hours of screening time.",
     gradient: "from-blue-500 to-indigo-600",
-    bg: "bg-blue-50",
   },
   {
     icon: Shield,
     title: "Bias-Free Evaluations",
     description: "Standardized questions and objective analysis help minimize unconscious bias.",
     gradient: "from-emerald-500 to-teal-600",
-    bg: "bg-emerald-50",
   },
   {
     icon: BarChart,
     title: "Data-Driven Insights",
     description: "Get comprehensive candidate evaluations with response analysis and scoring.",
     gradient: "from-purple-500 to-pink-600",
-    bg: "bg-purple-50",
   },
   {
     icon: Zap,
     title: "Faster Hiring Process",
     description: "Reduce time-to-hire by quickly identifying top candidates.",
     gradient: "from-orange-500 to-rose-600",
-    bg: "bg-orange-50",
   },
 ];
 
@@ -73,7 +69,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50/30 to-white p-6 md:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50/30 to-white dark:from-gray-950 dark:via-gray-900 dark:to-indigo-950/20 p-6 md:p-8 transition-colors duration-300">
       <div className="max-w-4xl mx-auto space-y-8">
 
         {/* Page Header */}
@@ -86,18 +82,17 @@ export default function SettingsPage() {
               </div>
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Settings</h1>
-              <p className="text-gray-500 text-sm mt-0.5">Configure your AIcruiter experience</p>
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Settings</h1>
+              <p className="text-gray-500 dark:text-gray-400 text-sm mt-0.5">Configure your AIcruiter experience</p>
             </div>
           </div>
         </div>
 
         {/* Benefits Section */}
         <div className="animate-fade-in-up delay-100">
-          {/* Section header */}
           <div className="flex items-center gap-3 mb-5">
             <div className="w-1 h-7 rounded-full bg-gradient-to-b from-indigo-500 to-purple-600" />
-            <h2 className="font-bold text-xl text-gray-800 flex items-center gap-2">
+            <h2 className="font-bold text-xl text-gray-800 dark:text-gray-100 flex items-center gap-2">
               <Sparkles className="w-5 h-5 text-indigo-500" />
               How AIcruiter Helps You Hire Smarter
             </h2>
@@ -109,7 +104,7 @@ export default function SettingsPage() {
               return (
                 <div
                   key={index}
-                  className={`card-premium p-5 animate-fade-in-up`}
+                  className="card-premium p-5 animate-fade-in-up"
                   style={{ animationDelay: `${index * 80 + 200}ms` }}
                 >
                   <div className="flex items-start gap-4">
@@ -117,8 +112,8 @@ export default function SettingsPage() {
                       <Icon className="h-5 w-5 text-white" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gray-800 mb-1">{benefit.title}</h3>
-                      <p className="text-sm text-gray-500 leading-relaxed">{benefit.description}</p>
+                      <h3 className="font-semibold text-gray-800 dark:text-gray-100 mb-1">{benefit.title}</h3>
+                      <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">{benefit.description}</p>
                     </div>
                   </div>
                 </div>
@@ -131,7 +126,7 @@ export default function SettingsPage() {
         <div className="animate-fade-in-up delay-300">
           <div className="flex items-center gap-3 mb-5">
             <div className="w-1 h-7 rounded-full bg-gradient-to-b from-rose-500 to-orange-500" />
-            <h2 className="font-bold text-xl text-gray-800">Account Management</h2>
+            <h2 className="font-bold text-xl text-gray-800 dark:text-gray-100">Account Management</h2>
           </div>
 
           <div className="card-premium p-6">
@@ -144,10 +139,10 @@ export default function SettingsPage() {
                   }
                 </div>
                 <div>
-                  <p className="font-semibold text-gray-800">
+                  <p className="font-semibold text-gray-800 dark:text-gray-100">
                     {isLoggedIn ? 'Sign out of your account' : 'Sign in to your account'}
                   </p>
-                  <p className="text-sm text-gray-500 mt-0.5">
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
                     {isLoggedIn
                       ? "You'll need to sign in again to access AIcruiter"
                       : 'Sign in to access all features of AIcruiter'}
@@ -178,9 +173,9 @@ export default function SettingsPage() {
             </div>
 
             {/* Status indicator */}
-            <div className="mt-4 pt-4 border-t border-gray-100 flex items-center gap-2">
-              <div className={`w-2 h-2 rounded-full ${isLoggedIn ? 'bg-green-400 animate-pulse' : 'bg-gray-300'}`} />
-              <span className="text-xs text-gray-500">
+            <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700 flex items-center gap-2">
+              <div className={`w-2 h-2 rounded-full ${isLoggedIn ? 'bg-green-400 animate-pulse' : 'bg-gray-300 dark:bg-gray-600'}`} />
+              <span className="text-xs text-gray-500 dark:text-gray-400">
                 {isLoggedIn ? 'Currently signed in' : 'Not signed in'}
               </span>
             </div>
@@ -193,13 +188,13 @@ export default function SettingsPage() {
             <div className="flex items-center gap-3">
               <CheckCircle className="w-5 h-5 text-green-500" />
               <div>
-                <p className="font-semibold text-gray-800 text-sm">AIcruiter v1.0</p>
-                <p className="text-xs text-gray-400">All systems operational</p>
+                <p className="font-semibold text-gray-800 dark:text-gray-100 text-sm">AIcruiter v1.0</p>
+                <p className="text-xs text-gray-400 dark:text-gray-500">All systems operational</p>
               </div>
             </div>
-            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-green-50 border border-green-100">
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-800">
               <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-              <span className="text-xs font-medium text-green-700">Online</span>
+              <span className="text-xs font-medium text-green-700 dark:text-green-400">Online</span>
             </div>
           </div>
         </div>

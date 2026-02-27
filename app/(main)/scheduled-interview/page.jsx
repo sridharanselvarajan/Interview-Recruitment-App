@@ -42,10 +42,22 @@ function ScheduledInterview() {
         }
     };
 
+    const onDelete = (interview_id) => {
+        setInterviewList((prev) => prev.filter((i) => i.interview_id !== interview_id));
+    };
+
+    const onUpdate = (interview_id, updatedFields) => {
+        setInterviewList((prev) =>
+            prev.map((i) =>
+                i.interview_id === interview_id ? { ...i, ...updatedFields } : i
+            )
+        );
+    };
+
     return (
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
+                <h1 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-gray-100">
                     Interview Feedback Dashboard
                 </h1>
                 <Link href="/dashboard">
@@ -60,12 +72,12 @@ function ScheduledInterview() {
                     <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-500"></div>
                 </div>
             ) : interviewList.length === 0 ? (
-                <div className="p-8 flex flex-col items-center justify-center bg-white rounded-xl border border-gray-200 text-center max-w-md mx-auto">
-                    <div className="bg-blue-100 p-4 rounded-full mb-4">
-                        <Video className="h-8 w-8 text-blue-600" />
+                <div className="p-8 flex flex-col items-center justify-center bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 text-center max-w-md mx-auto">
+                    <div className="bg-blue-100 dark:bg-blue-900/40 p-4 rounded-full mb-4">
+                        <Video className="h-8 w-8 text-blue-600 dark:text-blue-400" />
                     </div>
-                    <h2 className="text-xl font-medium text-gray-800">No Interviews Found</h2>
-                    <p className="text-gray-600 mt-2 mb-4">
+                    <h2 className="text-xl font-medium text-gray-800 dark:text-gray-100">No Interviews Found</h2>
+                    <p className="text-gray-600 dark:text-gray-400 mt-2 mb-4">
                         You haven't created any interviews yet. Get started by creating your first one!
                     </p>
                     <Link href="/create-interview">
@@ -79,8 +91,11 @@ function ScheduledInterview() {
                     {interviewList.map((interview, index) => (
                         <InterviewCard
                             key={index}
+                            index={index}
                             interview={interview}
                             viewDetail={true}
+                            onDelete={onDelete}
+                            onUpdate={onUpdate}
                             className="hover:shadow-md transition-shadow"
                         />
                     ))}

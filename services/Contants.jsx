@@ -1,4 +1,4 @@
-import { BriefcaseBusinessIcon, Calendar, Code2Icon, LayoutDashboard, List, Puzzle, Settings, ShieldCheck, User2Icon, WalletCards } from "lucide-react";
+import { BriefcaseBusinessIcon, Calendar, Code2Icon, FileSearch2, LayoutDashboard, List, Puzzle, Settings, ShieldCheck, User2Icon, WalletCards } from "lucide-react";
 
 export const InterviewType =[
     {
@@ -38,6 +38,11 @@ export const SidebarOptions =[
         name:'All Interview',
         icon:List,
         path:'/all-interview'
+    },
+    {
+        name:'Resume Analyzer',
+        icon:FileSearch2,
+        path:'/resume-analyzer'
     },
     {
         name:'Contact',
@@ -128,6 +133,62 @@ JSON OUTPUT STRUCTURE:
     ],
     "Recommendation": "<Recommended | Not Recommended>",
     "RecommendationMsg": "<Brief justification for the recommendation>"
+  }
+}
+`;
+
+export const RESUME_ANALYSIS_PROMPT = `
+You are an expert ATS (Applicant Tracking System) analyst and Senior HR professional.
+Analyze the following resume text and provide a comprehensive ATS evaluation.
+
+Resume Text:
+{{resumeText}}
+
+INSTRUCTIONS:
+1. Calculate an ATS Score from 0-100 based on formatting, keywords, skills, experience clarity, and completeness.
+2. Extract all technical and soft skills found in the resume.
+3. Identify key projects and achievements.
+4. Find gaps or missing sections (e.g., missing summary, no quantified achievements, missing keywords).
+5. Provide specific, actionable recommendations to improve the ATS score.
+6. Respond with ONLY valid JSON, no markdown, no code blocks.
+
+JSON OUTPUT STRUCTURE:
+{
+  "atsScore": <number 0-100>,
+  "scoreBreakdown": {
+    "formatting": <number 0-20>,
+    "keywords": <number 0-25>,
+    "experience": <number 0-25>,
+    "skills": <number 0-15>,
+    "education": <number 0-15>
+  },
+  "summary": "<2-3 sentence overview of the resume>",
+  "skills": {
+    "technical": ["<skill1>", "<skill2>"],
+    "soft": ["<skill1>", "<skill2>"]
+  },
+  "strengths": ["<strength1>", "<strength2>", "<strength3>"],
+  "gaps": ["<gap1>", "<gap2>", "<gap3>"],
+  "recommendations": [
+    {
+      "priority": "High",
+      "title": "<Short title>",
+      "description": "<Detailed actionable recommendation>"
+    },
+    {
+      "priority": "Medium",
+      "title": "<Short title>",
+      "description": "<Detailed actionable recommendation>"
+    },
+    {
+      "priority": "Low",
+      "title": "<Short title>",
+      "description": "<Detailed actionable recommendation>"
+    }
+  ],
+  "keywords": {
+    "found": ["<keyword1>", "<keyword2>"],
+    "missing": ["<keyword1>", "<keyword2>"]
   }
 }
 `;

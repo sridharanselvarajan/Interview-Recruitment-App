@@ -13,7 +13,7 @@ function QuestionListContainer({ questionList }) {
     <div className="space-y-5">
       <div className="flex items-center gap-3">
         <div className="w-1 h-6 rounded-full bg-gradient-to-b from-indigo-500 to-purple-600" />
-        <h2 className="text-lg font-bold text-gray-800">
+        <h2 className="text-lg font-bold text-gray-800 dark:text-gray-100">
           Generated Interview Questions
         </h2>
       </div>
@@ -24,7 +24,7 @@ function QuestionListContainer({ questionList }) {
           return (
             <div
               key={index}
-              className="group relative p-4 rounded-xl border border-gray-100 bg-white shadow-sm hover:shadow-md hover:border-indigo-100 transition-all duration-200 animate-fade-in-up"
+              className="group relative p-4 rounded-xl border border-gray-100 dark:border-gray-700/50 bg-white dark:bg-gray-800/60 shadow-sm hover:shadow-md hover:border-indigo-100 dark:hover:border-indigo-700/50 transition-all duration-200 animate-fade-in-up"
               style={{ animationDelay: `${index * 40}ms` }}
             >
               {/* Left accent bar */}
@@ -36,7 +36,7 @@ function QuestionListContainer({ questionList }) {
                   <div className={`w-7 h-7 rounded-lg bg-gradient-to-br ${gradient} flex items-center justify-center text-white text-xs font-bold flex-shrink-0 mt-0.5`}>
                     {index + 1}
                   </div>
-                  <p className="font-medium text-gray-800 text-sm leading-relaxed">{item.question}</p>
+                  <p className="font-medium text-gray-800 dark:text-gray-200 text-sm leading-relaxed">{item.question}</p>
                 </div>
                 {item?.type && (
                   <span className={`flex-shrink-0 px-2.5 py-1 text-xs font-semibold rounded-full bg-gradient-to-r ${gradient} text-white shadow-sm`}>
@@ -46,9 +46,9 @@ function QuestionListContainer({ questionList }) {
               </div>
 
               {item?.guidance && (
-                <div className="mt-3 ml-10 p-3 bg-gray-50 rounded-lg border border-gray-100">
-                  <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Evaluation Guidance</p>
-                  <p className="text-sm text-gray-600 leading-relaxed">{item.guidance}</p>
+                <div className="mt-3 ml-10 p-3 bg-gray-50 dark:bg-gray-900/60 rounded-lg border border-gray-100 dark:border-gray-700/40">
+                  <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-1">Evaluation Guidance</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">{item.guidance}</p>
                 </div>
               )}
             </div>
